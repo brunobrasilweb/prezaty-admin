@@ -17,10 +17,10 @@ Frontend Tecnologies
 ---
 
 * [VueJs] (https://vuejs.org/)
-* [PrimeVue] (https://www.primefaces.org/#primevue)
+* [Ant Design] (https://www.antdv.com)
 * [NuxtJs] (https://nuxtjs.org/)
 * [Lodash] (https://lodash.com/)
-* [moment] (http://momentjs.com/)
+* [Moment] (http://momentjs.com/)
 * [Axios] (https://github.com/axios/axios)
 
 Backend Tecnologies
