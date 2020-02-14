@@ -5,7 +5,7 @@
         <a-card title="Entrar no Sistema" :bordered="false">
           <a-form :form="form" class="login-form" @submit="postLogin">
             <a-form-item>
-              <a-input v-decorator="['userName', { rules: [{ required: true, message: 'Digite o e-mail!' }] }]" placeholder="E-mail">
+              <a-input v-decorator="['userName', { rules: [{ required: true, message: 'Digite o e-mail!' }] }]" type="email" placeholder="E-mail">
                 <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
               </a-input>
             </a-form-item>

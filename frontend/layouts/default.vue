@@ -13,19 +13,19 @@
         <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline">
           <a-menu-item key="1">
             <a-icon type="dashboard"/>
-            <span>Dashboard</span>
+            <span><NLink to="/">Dashboard</NLink></span>
           </a-menu-item>
           <a-menu-item key="3">
             <a-icon type="shop"/>
-            <span>Cliente</span>
+            <span><NLink to="/customer">Cliente</NLink></span>
           </a-menu-item>
           <a-sub-menu key="2">
             <span slot="title">
               <a-icon type="lock"/>
               <span>Permissões</span>
             </span>
-            <a-menu-item key="setup:1">Usuários</a-menu-item>
-            <a-menu-item key="setup:2">Grupos de Usuários</a-menu-item>
+            <a-menu-item key="setup:1"><NLink to="/user">Usuários</NLink></a-menu-item>
+            <a-menu-item key="setup:2"><NLink to="/user-group">Grupos de Usuários</NLink></a-menu-item>
           </a-sub-menu>
         </a-menu>
       </a-layout-sider>
@@ -37,7 +37,7 @@
                 <a-icon type="user" /> Bruno Brasil
               </span>
               <a-menu-item-group>
-                <a-menu-item key="setting:1">Minha Conta</a-menu-item>
+                <a-menu-item key="setting:1"><NLink to="/my-account">Minha Conta</NLink></a-menu-item>
                 <a-menu-item @click="logout" key="setting:3">Sair</a-menu-item>
               </a-menu-item-group>
             </a-sub-menu>
