@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
@@ -26,7 +28,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public UserFormDTO add(@RequestBody UserFormDTO userFormDTO) {
+    public UserFormDTO add(@Valid @RequestBody UserFormDTO userFormDTO) {
         return userService.save(userFormDTO);
     }
 
@@ -36,7 +38,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public UserFormDTO update(@RequestBody UserFormDTO userFormDTO, @PathVariable("id") Long id) {
+    public UserFormDTO update(@Valid @RequestBody UserFormDTO userFormDTO, @PathVariable("id") Long id) {
         UserFormDTO.UserFormDTOBuilder userFormDTOBuilder = userFormDTO.toBuilder();
         UserFormDTO userFormDTONew = userFormDTOBuilder
                 .id(id)

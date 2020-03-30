@@ -5,6 +5,7 @@ import br.com.prezaty.admin.dto.UserFormDTO;
 import br.com.prezaty.admin.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public class UserMapper {
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public UserDTO userToUserDTO(User user) {
         return modelMapper.map(user, UserDTO.class);
@@ -40,10 +43,18 @@ public class UserMapper {
     }
 
     public User userFormDTOToUser(UserFormDTO userFormDTO) {
-        return modelMapper.map(userFormDTO, User.class);
+        UserFormDTO.UserFormDTOBuilder userFormDTOBuilder = userFormDTO.toBuilder();
+        UserFormDTO userFormDTONew = userFormDTOBuilder.build();
+        if (userFormDTO.getPassword() != null) {
+            userFormDTONew = userFormDTOBuilder.password(passwordEncoder.encode(userFormDTO.getPassword())).build();
+        }
+
+        return modelMapper.map(userFormDTONew, User.class);
     }
 
     public UserFormDTO userToUserFormDTO(User user) {
-        return modelMapper.map(user, UserFormDTO.class);
+        User.UserBuilder userBuilder = user.toBuilder();
+        User userNew = userBuilder.password(null).build();
+        return modelMapper.map(userNew, UserFormDTO.class);
     }
 }
