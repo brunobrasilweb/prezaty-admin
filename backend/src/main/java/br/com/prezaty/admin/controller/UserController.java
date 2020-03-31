@@ -1,7 +1,8 @@
 package br.com.prezaty.admin.controller;
 
 import br.com.prezaty.admin.dto.UserDTO;
-import br.com.prezaty.admin.dto.UserFormDTO;
+import br.com.prezaty.admin.dto.UserRequestDTO;
+import br.com.prezaty.admin.dto.UserResponseDTO;
 import br.com.prezaty.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,13 +24,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public UserFormDTO get(@PathVariable("id") Long id) {
+    public UserResponseDTO get(@PathVariable("id") Long id) {
         return userService.byId(id);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public UserFormDTO add(@Valid @RequestBody UserFormDTO userFormDTO) {
-        return userService.save(userFormDTO);
+    public UserResponseDTO add(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+        return userService.save(userRequestDTO);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -38,13 +39,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public UserFormDTO update(@Valid @RequestBody UserFormDTO userFormDTO, @PathVariable("id") Long id) {
-        UserFormDTO.UserFormDTOBuilder userFormDTOBuilder = userFormDTO.toBuilder();
-        UserFormDTO userFormDTONew = userFormDTOBuilder
+    public UserResponseDTO update(@Valid @RequestBody UserRequestDTO userRequestDTO, @PathVariable("id") Long id) {
+        UserRequestDTO.UserRequestDTOBuilder userRequestDTOBuilder = userRequestDTO.toBuilder();
+        UserRequestDTO userRequestDTONew = userRequestDTOBuilder
                 .id(id)
                 .build();
 
-        return userService.save(userFormDTONew);
+        return userService.save(userRequestDTONew);
     }
 
 }

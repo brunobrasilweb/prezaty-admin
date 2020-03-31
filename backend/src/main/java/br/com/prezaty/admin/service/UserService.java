@@ -1,7 +1,8 @@
 package br.com.prezaty.admin.service;
 
 import br.com.prezaty.admin.dto.UserDTO;
-import br.com.prezaty.admin.dto.UserFormDTO;
+import br.com.prezaty.admin.dto.UserRequestDTO;
+import br.com.prezaty.admin.dto.UserResponseDTO;
 import br.com.prezaty.admin.entity.User;
 import br.com.prezaty.admin.repository.UserRepository;
 import br.com.prezaty.admin.service.mapper.UserMapper;
@@ -32,16 +33,16 @@ public class UserService {
     }
 
     @Transactional
-    public UserFormDTO save(UserFormDTO userFormDTO) {
-        User user = userMapper.userFormDTOToUser(userFormDTO);
+    public UserResponseDTO save(UserRequestDTO userRequestDTO) {
+        User user = userMapper.userRequestDTOToUser(userRequestDTO);
         user = userRepository.save(user);
 
-        return userMapper.userToUserFormDTO(user);
+        return userMapper.userToUserResponseDTO(user);
     }
 
-    public UserFormDTO byId(Long id) {
+    public UserResponseDTO byId(Long id) {
         User user = userRepository.getOne(id);
-        return userMapper.userToUserFormDTO(user);
+        return userMapper.userToUserResponseDTO(user);
     }
 
     public void delete(Long id) {

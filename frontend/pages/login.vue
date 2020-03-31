@@ -5,7 +5,7 @@
         <a-card title="Entrar no Sistema" :bordered="false">
           <a-form :form="form" class="login-form" @submit="postLogin">
             <a-form-item>
-              <a-input v-decorator="['userName', { rules: [{ required: true, message: 'Digite o e-mail!' }] }]" type="email" placeholder="E-mail">
+              <a-input v-decorator="['usernameOrEmail', { rules: [{ required: true, message: 'Digite o e-mail!' }] }]" type="email" placeholder="E-mail">
                 <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
               </a-input>
             </a-form-item>
@@ -25,7 +25,11 @@
   </a-layout>
 </template>
 <script>
-const Cookie = process.client ? require('js-cookie') : undefined
+import Cookies from 'js-cookie'
+import * as authService from '../service/auth'
+import * as userService from '../service/user'
+import jwt_decode from 'jwt-decode'
+import Http from '../service/http'
 
 export default {
   layout: 'blank',
@@ -42,12 +46,30 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          const auth = {
-            accessToken: 'someStringGotFromApiServiceWithAjax'
-          }
-          this.$store.commit('setAuth', auth)
-          Cookie.set('auth', auth)
-          this.$router.push('/')
+          authService.signin(values).then(response => {
+            if (response.status == 200) {
+              const data = response.data
+              const auth = {
+                accessToken: data.accessToken
+              }
+              const accessTokenDecode = jwt_decode(auth.accessToken)
+              Http.defaults.headers.common = {'Authorization': `Bearer ${auth.accessToken}`}
+              
+              userService.byId(accessTokenDecode.sub).then(responseUser => {
+                if (responseUser.status == 200) {
+                  this.$store.commit('setAuth', auth)
+                  Cookies.set('auth', auth)
+                  const dataUser = responseUser.data
+                  authService.setUser(dataUser, accessTokenDecode.exp)
+                  this.$router.push('/')
+                } else {
+                  this.$message.error('Erro ao buscar os dados do usuário.')
+                }     
+              }) 
+            }
+          })
+        } else {
+          this.$message.error('Preencha os dados do login corretamente.')
         }
       })
     }

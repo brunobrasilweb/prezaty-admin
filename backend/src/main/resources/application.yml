@@ -15,8 +15,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: elenuncaesquece
-    url: jdbc:postgresql://localhost:5432/admin
+    password: 1234
+    url: jdbc:postgresql://localhost:5432/prezaty_admin
     maxActive: 10
     maxIdle: 5
     minIdle: 2
@@ -29,7 +29,7 @@ spring:
   flyway:
     enabled: true
 server:
-  port: 8181
+  port: 8080
 cors:
   origins: http://localhost:3000
 app:
@@ -67,7 +67,7 @@ spring:
   flyway:
     enabled: true
 server:
-  port: 8181
+  port: 8080
 cors:
   origins: http://localhost:3000
 app:
@@ -105,7 +105,7 @@ spring:
   flyway:
     enabled: true
 server:
-  port: 8181
+  port: 8080
 cors:
   origins: http://localhost:3000
 app:

@@ -1,8 +1,10 @@
 package br.com.prezaty.admin.service.mapper;
 
 import br.com.prezaty.admin.dto.UserDTO;
-import br.com.prezaty.admin.dto.UserFormDTO;
+import br.com.prezaty.admin.dto.UserRequestDTO;
+import br.com.prezaty.admin.dto.UserResponseDTO;
 import br.com.prezaty.admin.entity.User;
+import br.com.prezaty.admin.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +20,9 @@ public class UserMapper {
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
     public UserDTO userToUserDTO(User user) {
         return modelMapper.map(user, UserDTO.class);
@@ -42,19 +46,28 @@ public class UserMapper {
                 .collect(Collectors.toList());
     }
 
-    public User userFormDTOToUser(UserFormDTO userFormDTO) {
-        UserFormDTO.UserFormDTOBuilder userFormDTOBuilder = userFormDTO.toBuilder();
-        UserFormDTO userFormDTONew = userFormDTOBuilder.build();
-        if (userFormDTO.getPassword() != null) {
-            userFormDTONew = userFormDTOBuilder.password(passwordEncoder.encode(userFormDTO.getPassword())).build();
+    public User userRequestDTOToUser(UserRequestDTO userRequestDTO) {
+        UserRequestDTO.UserRequestDTOBuilder userRequestDTOBuilder = userRequestDTO.toBuilder();
+        UserRequestDTO userRequestDTONew = userRequestDTOBuilder.build();
+        if (userRequestDTO.getPassword() != null && userRequestDTO.getId() == null) {
+            userRequestDTONew = userRequestDTOBuilder.password(passwordEncoder.encode(userRequestDTO.getPassword())).build();
+        } else if (userRequestDTO.getId() != null && userRequestDTO.getNewPassword() != null)  {
+            userRequestDTONew = userRequestDTOBuilder.password(passwordEncoder.encode(userRequestDTO.getNewPassword())).build();
+        } else if (userRequestDTO.getId() != null) {
+            User user = userRepository.getOne(userRequestDTO.getId());
+            userRequestDTONew = userRequestDTOBuilder.password(user.getPassword()).build();
         }
 
-        return modelMapper.map(userFormDTONew, User.class);
+        return modelMapper.map(userRequestDTONew, User.class);
     }
 
-    public UserFormDTO userToUserFormDTO(User user) {
+    public UserRequestDTO userToUserFormDTO(User user) {
         User.UserBuilder userBuilder = user.toBuilder();
         User userNew = userBuilder.password(null).build();
-        return modelMapper.map(userNew, UserFormDTO.class);
+        return modelMapper.map(userNew, UserRequestDTO.class);
+    }
+
+    public UserResponseDTO userToUserResponseDTO(User user) {
+        return modelMapper.map(user, UserResponseDTO.class);
     }
 }

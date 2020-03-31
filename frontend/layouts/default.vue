@@ -52,7 +52,8 @@
 </template>
 
 <script>
-const Cookie = process.client ? require('js-cookie') : undefined
+import Cookies from 'js-cookie'
+import * as authService from '../service/auth'
 
 export default {
   middleware: 'authenticated',
@@ -63,13 +64,13 @@ export default {
   },
   methods: {
     onCollapse(collapsed, type) {
-      console.log(collapsed, type);
+      console.log(collapsed, type)
     },
     onBreakpoint(broken) {
-      console.log(broken);
+      console.log(broken)
     },
     logout () {
-      Cookie.remove('auth')
+      authService.logout()
       this.$store.commit('setAuth', null)
       this.$router.push('login')
     }

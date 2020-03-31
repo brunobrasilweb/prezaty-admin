@@ -54,5 +54,8 @@ export default {
     */
     extend (config, ctx) {
     }
+  },
+  env: {
+    baseApiUrl: process.env.BASE_API_URL || 'http://localhost:8080'
   }
 }
