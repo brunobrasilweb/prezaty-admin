@@ -1,3 +1,4 @@
+const baseApiUrl = process.env.BASE_API_URL || 'http://localhost:8080'
 
 export default {
   mode: 'universal',
@@ -40,10 +41,12 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
   axios: {
-    proxy: true
+    proxy: true,
+    baseURL: baseApiUrl 
   },
   /*
   ** Build configuration
@@ -55,7 +58,18 @@ export default {
     extend (config, ctx) {
     }
   },
-  env: {
-    baseApiUrl: process.env.BASE_API_URL || 'http://localhost:8080'
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: baseApiUrl + '/auth/signin', method: 'post', propertyName: 'accessToken' },
+          user: { url: baseApiUrl + '/user/me', method: 'get', propertyName: false  },
+          logout: false,
+          tokenRequired: true,
+          tokenType: 'bearer',
+          autoFetchUser: true
+        }
+      }
+    }
   }
 }

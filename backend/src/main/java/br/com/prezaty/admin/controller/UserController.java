@@ -3,10 +3,12 @@ package br.com.prezaty.admin.controller;
 import br.com.prezaty.admin.dto.UserDTO;
 import br.com.prezaty.admin.dto.UserRequestDTO;
 import br.com.prezaty.admin.dto.UserResponseDTO;
+import br.com.prezaty.admin.security.UserPrincipal;
 import br.com.prezaty.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,13 +21,18 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Page<UserDTO> lista(Pageable pageable) {
+    public Page<UserDTO> list(Pageable pageable) {
         return userService.list(pageable);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserResponseDTO get(@PathVariable("id") Long id) {
         return userService.byId(id);
+    }
+
+    @RequestMapping(value = "/me", method = RequestMethod.GET)
+    public UserPrincipal me(Authentication authentication) {
+        return (UserPrincipal) authentication.getPrincipal();
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

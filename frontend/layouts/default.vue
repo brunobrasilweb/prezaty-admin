@@ -34,7 +34,7 @@
           <a-menu class="menu-account" :style="{ lineHeight: '64px' }" mode="horizontal">
             <a-sub-menu>
               <span slot="title" class="submenu-title-wrapper">
-                <a-icon type="user" /> Bruno Brasil
+                <a-icon type="user" /> {{ loggedInUser.name }}
               </span>
               <a-menu-item-group>
                 <a-menu-item key="setting:1"><NLink to="/my-account">Minha Conta</NLink></a-menu-item>
@@ -52,11 +52,9 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
-import * as authService from '../service/auth'
+import { mapGetters } from 'vuex'
 
 export default {
-  middleware: 'authenticated',
   data() {
     return {
       collapsed: false
@@ -70,10 +68,12 @@ export default {
       console.log(broken)
     },
     logout () {
-      authService.logout()
-      this.$store.commit('setAuth', null)
+      this.$auth.logout();
       this.$router.push('login')
     }
+  },
+  computed: {
+    ...mapGetters(['loggedInUser']),
   }
 };
 </script>
