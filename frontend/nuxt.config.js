@@ -30,7 +30,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/antd-ui'
+    '@/plugins/antd-ui',
+    '@/plugins/axios'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -45,7 +46,6 @@ export default {
     '@nuxtjs/auth'
   ],
   axios: {
-    proxy: true,
     baseURL: baseApiUrl 
   },
   /*
@@ -57,6 +57,9 @@ export default {
     */
     extend (config, ctx) {
     }
+  },
+  env: {
+    baseApiUrl: baseApiUrl
   },
   auth: {
     strategies: {

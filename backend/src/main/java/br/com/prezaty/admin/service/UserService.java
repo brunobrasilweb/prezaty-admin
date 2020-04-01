@@ -33,7 +33,13 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDTO save(UserRequestDTO userRequestDTO) {
+    public UserResponseDTO save(UserRequestDTO userRequestDTO) throws Exception {
+        if (userRequestDTO.getId() == null) {
+            if (existByEmail(userRequestDTO.getEmail())) {
+                throw new Exception("Já existe um usuário com esse e-mail.");
+            }
+        }
+
         User user = userMapper.userRequestDTOToUser(userRequestDTO);
         user = userRepository.save(user);
 
@@ -43,6 +49,15 @@ public class UserService {
     public UserResponseDTO byId(Long id) {
         User user = userRepository.getOne(id);
         return userMapper.userToUserResponseDTO(user);
+    }
+
+    public boolean existByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return true;
+        }
+
+        return false;
     }
 
     public void delete(Long id) {

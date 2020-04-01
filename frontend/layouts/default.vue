@@ -1,63 +1,62 @@
 <template>
   <div>
-    <a-layout style="min-height: 100vh">
-      <a-layout-sider
-        theme="light"
-        class="sider"
-        breakpoint="lg"
-        collapsedWidth="0"
-        @collapse="onCollapse"
-        @breakpoint="onBreakpoint"
-      >
-        <div class="logo"/>
-        <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline">
-          <a-menu-item key="1">
-            <a-icon type="dashboard"/>
-            <span><NLink to="/">Dashboard</NLink></span>
-          </a-menu-item>
-          <a-menu-item key="3">
-            <a-icon type="shop"/>
-            <span><NLink to="/customer">Cliente</NLink></span>
-          </a-menu-item>
-          <a-sub-menu key="2">
-            <span slot="title">
-              <a-icon type="lock"/>
-              <span>Permissões</span>
-            </span>
-            <a-menu-item key="setup:1"><NLink to="/user">Usuários</NLink></a-menu-item>
-            <a-menu-item key="setup:2"><NLink to="/user-group">Grupos de Usuários</NLink></a-menu-item>
-          </a-sub-menu>
-        </a-menu>
-      </a-layout-sider>
-      <a-layout class="layout">
-        <a-layout-header class="header">
-          <a-menu class="menu-account" :style="{ lineHeight: '64px' }" mode="horizontal">
-            <a-sub-menu>
-              <span slot="title" class="submenu-title-wrapper">
-                <a-icon type="user" /> {{ loggedInUser.name }}
+    <a-locale-provider :locale="locale">
+      <a-layout style="min-height: 100vh">
+        <a-layout-sider
+          theme="light"
+          class="sider"
+          breakpoint="lg"
+          collapsedWidth="0"
+          @collapse="onCollapse"
+          @breakpoint="onBreakpoint"
+        >
+          <div class="logo"/>
+          <a-menu theme="light" :defaultSelectedKeys="['1']" mode="inline">
+            <a-menu-item key="1">
+              <a-icon type="dashboard"/>
+              <span><NLink to="/">Dashboard</NLink></span>
+            </a-menu-item>
+            <a-sub-menu key="2">
+              <span slot="title">
+                <a-icon type="lock"/>
+                <span>Permissões</span>
               </span>
-              <a-menu-item-group>
-                <a-menu-item key="setting:1"><NLink to="/my-account">Minha Conta</NLink></a-menu-item>
-                <a-menu-item @click="logout" key="setting:3">Sair</a-menu-item>
-              </a-menu-item-group>
+              <a-menu-item key="setup:1"><NLink to="/user">Usuários</NLink></a-menu-item>
             </a-sub-menu>
           </a-menu>
-        </a-layout-header>
-        <a-layout-content class="content">
-          <nuxt />
-        </a-layout-content>
+        </a-layout-sider>
+        <a-layout class="layout">
+          <a-layout-header class="header">
+            <a-menu class="menu-account" :style="{ lineHeight: '64px' }" mode="horizontal">
+              <a-sub-menu>
+                <span slot="title" class="submenu-title-wrapper">
+                  <a-icon type="user" /> {{ loggedInUser.name }}
+                </span>
+                <a-menu-item-group>
+                  <a-menu-item key="setting:1"><NLink to="/my-account">Minha Conta</NLink></a-menu-item>
+                  <a-menu-item @click="logout" key="setting:3">Sair</a-menu-item>
+                </a-menu-item-group>
+              </a-sub-menu>
+            </a-menu>
+          </a-layout-header>
+          <a-layout-content class="content">
+            <nuxt />
+          </a-layout-content>
+        </a-layout>
       </a-layout>
-    </a-layout>
+    </a-locale-provider>  
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import ptBR from 'ant-design-vue/lib/locale-provider/pt_BR'
 
 export default {
   data() {
     return {
-      collapsed: false
+      collapsed: false,
+      locale: ptBR,
     };
   },
   methods: {
@@ -135,5 +134,9 @@ h1 {
 
 .ant-layout-sider-zero-width-trigger {
     top: 11px;
+}
+
+.gutter-row {
+  padding-right: 10px;
 }
 </style>

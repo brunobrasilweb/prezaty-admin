@@ -45,11 +45,13 @@ export default {
             this.$auth.loginWith('local', {
               data: values,
             }).then(response => {
-              console.log('response')
-              console.log(response)
               if (response.status == 200) {
                 this.$router.push('/')
+              } else {
+                this.$message.error('Dados incorretos. Tente novamente.')
               }
+            }).catch(error => {
+                this.$message.error('Dados incorretos. Tente novamente.')
             });
           } catch (e) {
             this.$message.error('Não foi possível fazer o login. ' + e.response.data.message)

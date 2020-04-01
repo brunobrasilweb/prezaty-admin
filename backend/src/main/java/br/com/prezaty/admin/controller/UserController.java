@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public UserResponseDTO add(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+    public UserResponseDTO add(@Valid @RequestBody UserRequestDTO userRequestDTO) throws Exception {
         return userService.save(userRequestDTO);
     }
 
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public UserResponseDTO update(@Valid @RequestBody UserRequestDTO userRequestDTO, @PathVariable("id") Long id) {
+    public UserResponseDTO update(@Valid @RequestBody UserRequestDTO userRequestDTO, @PathVariable("id") Long id) throws Exception {
         UserRequestDTO.UserRequestDTOBuilder userRequestDTOBuilder = userRequestDTO.toBuilder();
         UserRequestDTO userRequestDTONew = userRequestDTOBuilder
                 .id(id)
